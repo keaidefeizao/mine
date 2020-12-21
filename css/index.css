@@ -1,0 +1,52 @@
+#main{
+    margin: 50px auto;
+}
+.level{
+    text-align: center;
+    margin-bottom: 10px;
+}
+.level button{
+    padding: 5px 15px;
+    background:#02a4ad;
+    border:none;
+    color: #ffffff;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+.level button.active{
+    background: #00abff;
+}
+.info{
+    text-align: center;
+    margin-top: 10px;
+}
+.gameBox table{
+    border-spacing: 1px;
+    background: #929196;
+    margin: 0 auto;
+}
+.gameBox table td{
+    padding: 0;
+    width: 20px;
+    height:20px;
+    background: #ccc;
+    border: 2px solid;
+    border-color: #fff #a1a1a1 #a1a1a1 #fff;
+
+    text-align: center;
+    line-height: 20px;
+    font-weight: bold;
+}
+.mine{
+    background: #d9d9dd url(../image/mine.png) no-repeat center !important;
+    background-size: cover !important;
+}
+.flag{
+    background: #ccc url(../image/flag.png)no-repeat center !important;
+    background-size: cover !important;
+}
+.question{
+    background: #ccc url(../image/question.png)no-repeat center !important;
+    background-size: cover !important;
+}
