@@ -6,8 +6,8 @@ window.onload =function():void{
 //雷数量赋值
 function mineAddLenagth(y:number,x:number):void{
     try{
-        mine.squares[y][x].value++;
-        // (<HTMLElement>document.getElementById(`mine_${y}_${x}`)).innerText = (++mine.squares[y][x].value).toString();
+        // mine.squares[y][x].value++;
+        (<HTMLElement>document.getElementById(`mine_${y}_${x}`)).innerText = (++mine.squares[y][x].value).toString();
     }catch{
         // console.log(`err坐标是：${y},${x}`)
     }
@@ -30,7 +30,7 @@ function mineVerdict(){
         }
     }
 }
-//初始化雷区
+//判断初始化雷区
 function initMineNumber(type:string):void{
     switch (type){
         case '初级':
@@ -76,7 +76,7 @@ function createDom(type:string){
                 // if(mine.squares[y][x].type ==='mine'){
                 //     domTd.className = 'mine'
                 // }
-            }
+            } 
             mineAddClickListener(domTd);//设置雷块点击事件
             domTr.appendChild(domTd);
         }
@@ -87,25 +87,44 @@ function createDom(type:string){
     mine.parent.childNodes.item(0).remove();//移除子项
     mine.parent.appendChild(table);//添加子项
     // mineVerdict(); //判断雷位置并给周围格子赋值
+    // console.log(getAround(mine.squares[0][0]));
 }
 //设置雷块点击事件
 function mineAddClickListener(item:Element){
     item.addEventListener('click',(e)=>{
         let dom = <HTMLElement>e.target;
-        // console.log(dom.getAttribute('id'));
-        mineVerdict(); //判断雷位置并给周围格子赋值
+        
+        let y = dom.getAttribute('mine-localhost-y');
+        let x = dom.getAttribute('mine-localhost-x');
+
+        // mineVerdict(); //判断雷位置并给周围格子赋值
+        // console.log(getAround(mine.squares[y][x]));
     });
+}
+function getAround(squares):any[][]{
+    let x = squares.x;
+    let y = squares.y;
+    let result =new Array;
+
+    for(let i =x;i<=x+1;i++){
+        for(let j = y;j<=y+1;j++){
+            if(i<0||j<0||j>mine.td-1||j>mine.tr-1
+               || (i==x &&j==y) || mine.squares[j][i].type==='mine'){
+                   continue;
+            }
+            result.push([j,i]);
+        }
+    }
+    return result;
 }
 
  //监听功能更按钮点击事件
  document.querySelectorAll('.level button').forEach((item)=>{
     item.addEventListener('click',(e)=>{
         let dom = <HTMLButtonElement>e.target;//获取当前事件的dom
-        
-        let y = dom.getAttribute('mine-localhost-y');
-        let x = dom.getAttribute('mine-localhost-x');
 
         createDom(dom.innerText)
     })
+    
  })
  
