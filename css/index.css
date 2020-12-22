@@ -50,3 +50,7 @@
     background: #ccc url(../image/question.png)no-repeat center !important;
     background-size: cover !important;
 }
+.mine-active{
+    background:rgb(209, 5, 5) url(../image/mine.png) no-repeat center !important;
+    background-size: cover !important;
+}

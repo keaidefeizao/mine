@@ -8,7 +8,7 @@ namespace Models {
         public tds:any[][] = new Array();//存储当前单元格的dom 二维数组
         public surplusMine:number;//存储雷的数量
         public allRight:boolean = false;//标旗的是否有雷
-        public parent = document.querySelector('.gameBox');
+        public parent:HTMLDivElement = document.querySelector('.gameBox');
         constructor(tr:number,td:number,mineNum:number){
             this.tr = tr;
             this.td = td;
