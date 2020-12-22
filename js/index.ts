@@ -1,7 +1,13 @@
 /// <reference path = "./Models/mine.ts" /> 
 let mine:Models.Mine
+
+let isGameOver:boolean = false;
+
 const mineX = 'mine-localhost-x';
 const mineY = 'mine-localhost-y';
+
+const cl = ['zero','one','two','three',,'four','five','six','seven','eigth']
+
 window.onload =function():void{
     createDom('初级')
 }
@@ -56,6 +62,8 @@ function createDom(type:string){
     // console.log(type)
     initMineNumber(type);//初始化雷区
 
+    isGameOver = false;//初始化游戏状态
+
     //取消鼠标右击菜单
     mine.parent.oncontextmenu = ()=>{
         return false;
@@ -106,7 +114,7 @@ function play(ev:MouseEvent){
     let y = dom.getAttribute(mineY);
     let x = dom.getAttribute(mineX);
 
-    let squares = mine.squares[y][x];
+    let square = mine.squares[y][x];
 
     if(ev.buttons===1){//左键
 
@@ -114,16 +122,19 @@ function play(ev:MouseEvent){
         if(dom.className==='flag'){
             return;
         }
-        if(squares.type==='number'){
+        if(square.type==='number'){
 
-            dom.innerText = squares.value;
-            if(squares.value>0){
-                
+            
+            dom.className = cl[square.value];
+            if(square.value>0){
+                dom.innerText = square.value;
             }else{
-                
+                getAllZero(square);
             }
 
         }else{
+            alert('游戏结束！');
+            isGameOver = true;
             dom.className = 'mine-active';
         }
     }else if(ev.buttons===2){//右键
@@ -150,7 +161,9 @@ function mineAddClickListener(item:HTMLTableDataCellElement){
     //     // console.log(getAround(mine.squares[y][x]));
     // });
     item.onmousedown=(e)=>{
-        play(e)
+        if(!isGameOver){//游戏未结束才可继续点击
+            play(e)
+        } 
     }
     
 }
@@ -193,30 +206,37 @@ function updateNum(){
         }
     }
 }
+function getAllZero(square:any){
+    const around = getAround(square);
+    document.querySelector(`td[${mineY}='${square.y}'][${mineX}='${square.x}']`)?.setAttribute('is-check','true');
+    for(let i=0;i<around.length;i++){
+        var y = around[i][0];
+        var x = around[i][1];
+        const mineNum = mine.squares[y][x];
 
+        mine.squares[y][x].check = true;
 
+        let dom = document.querySelector(`td[${mineY}='${y}'][${mineX}='${x}']`);
+        
 
+        (<HTMLTableDataCellElement>mine.tds[y][x]).className = cl[mineNum.value];//设置样式颜色
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        if(mineNum.value===0){
+            if(dom.getAttribute('is-check')!=='true'){
+                dom?.setAttribute('is-check','true');
+                getAllZero(mineNum);
+            }
+        }else{
+            dom.innerHTML = mineNum.value;
+        }
+    }
+}
 
  //监听功能按钮点击事件
  document.querySelectorAll('.level button').forEach((item)=>{
     item.addEventListener('click',(e)=>{
         let dom = <HTMLButtonElement>e.target;//获取当前事件的dom
-
+        
         createDom(dom.innerText)
     })
     

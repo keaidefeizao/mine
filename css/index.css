@@ -54,3 +54,47 @@
     background:rgb(209, 5, 5) url(../image/mine.png) no-repeat center !important;
     background-size: cover !important;
 }
+.gameBox table tr td.zero{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+}
+.gameBox table tr td.one{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+    color: #0332fe;
+}
+.gameBox table tr td.two{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+    color: #019f02;
+}
+.gameBox table tr td.three{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+    color: #ff2600;
+}
+.gameBox table tr td.four{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+    color: #93208f;
+}
+.gameBox table tr td.five{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+    color: #ff7f29;
+}
+.gameBox table tr td.six{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+    color: #ff3fff;
+}
+.gameBox table tr td.seven{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+    color: #3fffbf;
+}
+.gameBox table tr td.eigth{
+    border-color: #d9d9d9;
+    background: #d9d9d9;
+    color: #22ee0f;
+}

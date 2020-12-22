@@ -1,7 +1,9 @@
 /// <reference path = "./Models/mine.ts" /> 
 var mine;
+var isGameOver = false;
 var mineX = 'mine-localhost-x';
 var mineY = 'mine-localhost-y';
+var cl = ['zero', 'one', 'two', 'three', , 'four', 'five', 'six', 'seven', 'eigth'];
 window.onload = function () {
     createDom('初级');
 };
@@ -54,6 +56,7 @@ function initMineNumber(type) {
 function createDom(type) {
     // console.log(type)
     initMineNumber(type); //初始化雷区
+    isGameOver = false; //初始化游戏状态
     //取消鼠标右击菜单
     mine.parent.oncontextmenu = function () {
         return false;
@@ -93,20 +96,24 @@ function play(ev) {
     var dom = ev.target;
     var y = dom.getAttribute(mineY);
     var x = dom.getAttribute(mineX);
-    var squares = mine.squares[y][x];
+    var square = mine.squares[y][x];
     if (ev.buttons === 1) { //左键
         //如果已经镖旗则不继续执行
         if (dom.className === 'flag') {
             return;
         }
-        if (squares.type === 'number') {
-            dom.innerText = squares.value;
-            if (squares.value > 0) {
+        if (square.type === 'number') {
+            dom.className = cl[square.value];
+            if (square.value > 0) {
+                dom.innerText = square.value;
             }
             else {
+                getAllZero(square);
             }
         }
         else {
+            alert('游戏结束！');
+            isGameOver = true;
             dom.className = 'mine-active';
         }
     }
@@ -134,7 +141,9 @@ function mineAddClickListener(item) {
     //     // console.log(getAround(mine.squares[y][x]));
     // });
     item.onmousedown = function (e) {
-        play(e);
+        if (!isGameOver) { //游戏未结束才可继续点击
+            play(e);
+        }
     };
 }
 function getAround(squares) {
@@ -173,6 +182,28 @@ function updateNum() {
                 mine.squares[num[k][0]][num[k][1]].value++;
             }
             // console.log(num);
+        }
+    }
+}
+function getAllZero(square) {
+    var _a;
+    var around = getAround(square);
+    (_a = document.querySelector("td[" + mineY + "='" + square.y + "'][" + mineX + "='" + square.x + "']")) === null || _a === void 0 ? void 0 : _a.setAttribute('is-check', 'true');
+    for (var i = 0; i < around.length; i++) {
+        var y = around[i][0];
+        var x = around[i][1];
+        var mineNum = mine.squares[y][x];
+        mine.squares[y][x].check = true;
+        var dom = document.querySelector("td[" + mineY + "='" + y + "'][" + mineX + "='" + x + "']");
+        mine.tds[y][x].className = cl[mineNum.value]; //设置样式颜色
+        if (mineNum.value === 0) {
+            if (dom.getAttribute('is-check') !== 'true') {
+                dom === null || dom === void 0 ? void 0 : dom.setAttribute('is-check', 'true');
+                getAllZero(mineNum);
+            }
+        }
+        else {
+            dom.innerHTML = mineNum.value;
         }
     }
 }
