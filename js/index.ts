@@ -1,12 +1,16 @@
 /// <reference path = "./Models/mine.ts" /> 
 let mine:Models.Mine
 
-let isGameOver:boolean = false;
+let isGameOver:boolean = false;//游戏状态
 
 const mineX = 'mine-localhost-x';
 const mineY = 'mine-localhost-y';
 
 const cl = ['zero','one','two','three',,'four','five','six','seven','eigth']
+
+let arrFlag:any[];
+
+let mineNum :number;
 
 window.onload =function():void{
     createDom('初级')
@@ -38,17 +42,20 @@ window.onload =function():void{
 //         }
 //     }
 // }
+function setDomMineNum(mineNum){
+    document.getElementById('mineLength').innerText = mineNum.toString();
+}
 //判断初始化雷区
 function initMineNumber(type:string):void{
     switch (type){
         case '初级':
-            mine = new Models.Mine(9,9,10);
+            mine = new Models.Mine(9,9,11);
             break;
         case '中级':
-            mine = new Models.Mine(16,16,40);
+            mine = new Models.Mine(16,16,41);
             break;
         case '高级':
-            mine = new Models.Mine(28,28,99);
+            mine = new Models.Mine(28,28,100);
             break
         case '重置':
             mine = new Models.Mine(mine.tr,mine.td,mine.mineNum);
@@ -56,10 +63,14 @@ function initMineNumber(type:string):void{
         default:
             return;
     }
+    mineNum = mine.mineNum-1;
+    setDomMineNum(mineNum);
 }
 ///加载地雷dom
 function createDom(type:string){
     // console.log(type)
+    arrFlag = new Array;
+
     initMineNumber(type);//初始化雷区
 
     isGameOver = false;//初始化游戏状态
@@ -133,17 +144,29 @@ function play(ev:MouseEvent){
             }
 
         }else{
-            alert('游戏结束！');
-            isGameOver = true;
             dom.className = 'mine-active';
+            if(confirm('游戏结束！是否继续？')){
+                continueGame();//继续游戏
+            }else{
+                isGameOver = true;
+            }
         }
     }else if(ev.buttons===2){//右键
         if(dom.innerText ==='' && dom.className ===''){
+
             dom.className = 'flag';
+
+            addFlag(square);//添加红旗
         }else if(dom.className ==='flag'){
+
             dom.className = 'question';
+
+            removeFlag(square.y,square.x);//移除红旗
         }else if(dom.className ==='question'){
+
             dom.className = '';
+
+            removeFlag(square.y,square.x);//移除红旗
         }
     }
 }
@@ -231,12 +254,56 @@ function getAllZero(square:any){
         }
     }
 }
+//检查是否完成游戏
+function checkGame(arrFlagLength:number):boolean{
+    if(arrFlagLength===mine.mineNum-1){
+        if(confirm('恭喜！！扫雷成功。是否继续')){
+            continueGame();//继续游戏
+        }else{
+            isGameOver=true;
+        }
+        return true
+    }
+    return false;
+}
+//添加红旗数据
+function addFlag(item){
+    
+    for(let i=0;i<mine.tr;i++){
+        for(let j=0;j<mine.td;j++){
+            if(mine.squares[i][j].type==='number'){
+                continue;
+            }else{
+                if(mine.squares[i][j].x === item.x && mine.squares[i][j].y===item.y){
+                    arrFlag.push(item)
+                    setDomMineNum(--mineNum);
+                    //检查是否完成游戏
+                    if(checkGame(arrFlag.length)) return;
+                }
+            }
+            
+        }
+    }
+}
+//删除红旗数据
+function removeFlag(y:number,x:number){
+    for(let i=0;i<arrFlag.length;i++){
+        if(arrFlag[i].y===y && arrFlag[i].x === x){
+            arrFlag.splice(i,1);
+        }
+    }
+}
+//继续游戏
+function continueGame(){
+    const buttonDom = document.querySelector('.level button.active');
+    createDom(buttonDom.innerHTML);
+}
 
  //监听功能按钮点击事件
  document.querySelectorAll('.level button').forEach((item)=>{
     item.addEventListener('click',(e)=>{
         let dom = <HTMLButtonElement>e.target;//获取当前事件的dom
-        
+
         createDom(dom.innerText)
     })
     
