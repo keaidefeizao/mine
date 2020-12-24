@@ -304,7 +304,13 @@ function continueGame(){
  document.querySelectorAll('.level button').forEach((item)=>{
     item.addEventListener('click',(e)=>{
         let dom = <HTMLButtonElement>e.target;//获取当前事件的dom
-
+        if(dom.innerText!=='重置'){
+            document.querySelectorAll('.level button').forEach(item=>{
+                let dom = <HTMLButtonElement>item;//获取当前事件的dom
+                dom.className = dom.className==='active' ? '':'';
+            })
+            dom.className = 'active';
+        }
         createDom(dom.innerText)
     })
     

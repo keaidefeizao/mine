@@ -272,6 +272,13 @@ function continueGame() {
 document.querySelectorAll('.level button').forEach(function (item) {
     item.addEventListener('click', function (e) {
         var dom = e.target; //获取当前事件的dom
+        if (dom.innerText !== '重置') {
+            document.querySelectorAll('.level button').forEach(function (item) {
+                var dom = item; //获取当前事件的dom
+                dom.className = dom.className === 'active' ? '' : '';
+            });
+            dom.className = 'active';
+        }
         createDom(dom.innerText);
     });
 });
