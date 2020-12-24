@@ -290,6 +290,7 @@ function removeFlag(y:number,x:number){
     for(let i=0;i<arrFlag.length;i++){
         if(arrFlag[i].y===y && arrFlag[i].x === x){
             arrFlag.splice(i,1);
+            setDomMineNum(++mineNum);
         }
     }
 }
