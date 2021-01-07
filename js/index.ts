@@ -119,7 +119,7 @@ function createDom(type:string){
 
     
 }
-function play(ev:MouseEvent){
+ function play(ev:MouseEvent){
     let dom = <HTMLElement>ev.target;
 
     let y = dom.getAttribute(mineY);
