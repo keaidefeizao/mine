@@ -3,8 +3,8 @@ let mine:Models.Mine
 
 let isGameOver:boolean = false;//游戏状态
 
-const mineX = 'mine-localhost-x';
-const mineY = 'mine-localhost-y';
+const mineX = 'mine-local-x';
+const mineY = 'mine-local-y';
 
 const cl = ['zero','one','two','three',,'four','five','six','seven','eigth']
 
