@@ -313,6 +313,4 @@ function continueGame(){
         }
         createDom(dom.innerText)
     })
-    
  })
- 
